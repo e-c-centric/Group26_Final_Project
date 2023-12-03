@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Game - Play Round</title>
+</head>
+<body>
+    <h2>Listen to the word carefully: {{ word_to_pronounce }}</h2>
+    <form action="{{ url_for('handle_answer') }}" method="post">
+        {% for i, word in enumerate(random_words) %}
+            <input type="radio" name="user_input" value="{{ i + 1 }}" required>
+            <label>{{ i + 1 }}. {{ word }}</label><br>
+        {% endfor %}
+        <input type="hidden" name="index" value="{{ index }}">
+        <input type="hidden" name="word_to_pronounce" value="{{ word_to_pronounce }}">
+        <button type="submit">Submit</button>
+    </form>
+    <div>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <p class="alert alert-{{ message[1] }}">{{ message[0] }}</p>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+</body>
+</html>
