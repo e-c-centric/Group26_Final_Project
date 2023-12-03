@@ -45,18 +45,18 @@ with open('Group26_Final_Project\words.txt', 'r') as file:
 
 refined_words = [word for word in words if word.isalpha() and len(word) >= 3]
 
-with open('Group26_Final_Project\application_words.txt', 'w') as file:
+with open('Group26_Final_Project/application_words.txt', 'w') as file:
     file.write('\n'.join(refined_words))
 
 random_sample = random.sample(refined_words, 1000)
-with open('Group26_Final_Project\training_words.txt', 'w') as file:
+with open('Group26_Final_Project/training_words.txt', 'w') as file:
     file.write('\n'.join(random_sample))
 
-file_path = 'Group26_Final_Project\training_words.txt'
+file_path = 'Group26_Final_Project/training_words.txt'
 training_df = pd.read_csv(file_path, sep= " ", names=['word'])
 training_df = training_df.dropna()
 
-file_path = 'Group26_Final_Project\application_words.txt'
+file_path = 'Group26_Final_Project/application_words.txt'
 application_df = pd.read_csv(file_path, sep= " ", names=['word'])
 application_df = application_df.dropna()
 
@@ -150,7 +150,7 @@ def play_round():
     else:
         word_to_pronounce = random_words[random.randint(0, 3)]
 
-    print(f"\nListen to the word: {word_to_pronounce}")
+    print(f"\nListen to the word:")
     play_audio(word_to_pronounce)
     time.sleep(0.1)
 
@@ -160,7 +160,6 @@ def play_round():
 
     user_input = int(input("Enter the index of the correct option: "))
 
-    print(f"User input: {user_input}")
 
     if user_input == random_words.index(word_to_pronounce) + 1:
         print("Correct!!")
