@@ -18,6 +18,7 @@ Implement an error analysis mechanism to customise content and adapt to individu
 - A README file that contains the project's documentation.
 - A presentation that explains the project's implementation and results.
 - A video that demonstrates the project's implementation and results.
+- A trained model that can be used to predict the cluster of a word.
 
 ## Required Libraries
 
@@ -25,21 +26,16 @@ Implement an error analysis mechanism to customise content and adapt to individu
 ## Installation Instructions
 
 ## Limitations
-The accent of the voice may not be so clear.
-The speed of the voice may be too fast for different users.
+- The accent of the voice may not be so clear.
+- The speed of the voice may be too fast for different users.
 
 
 ## Date Published
-'''
-03-12-2023
-'''
+- 03-12-2023
 
 ## Demo
 
 ## References
-'''
 M. Kharis, Kisyani Laksono, and Suhartono. 2022. Utilization of NLP-Technology in Current Applications for Education and Research by Indonesian Student, Teacher, and Lecturer. 14th ed., Journal of Higher Education Theory &amp; Practice.
 
 Holland, V.M., Sams, M.R., & Kaplan, J.D. (Eds.). (1996). Intelligent Language Tutors: Theory Shaping Technology (1st ed.). Routledge. https://doi.org/10.4324/9781315044811
-
-'''
