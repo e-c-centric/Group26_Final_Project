@@ -3,10 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quiz Game</title>
+    <title>Word Pronunciation Game</title>
 </head>
 <body>
-    <h1>Welcome to the Quiz Game!</h1>
-    <a href="{{ url_for('play_round') }}">Start Quiz</a>
+    <h1>Listen to the word:</h1>
+    <audio controls>
+        <source src="{{ url_for('static', filename='pronunciation.mp3') }}" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+    <h2>Select the correct option by index:</h2>
+    <form action="{{ url_for('check_answer') }}" method="post">
+        {% for i, word in enumerate(random_words) %}
+            <label>
+                <input type="radio" name="user_input" value="{{ i+1 }}" required> {{ i+1 }}. {{ word }}
+            </label><br>
+        {% endfor %}
+        <input type="hidden" name="correct_index" value="{{ random_words.index(word_to_pronounce) + 1 }}">
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+    <h3>{{ result }}</h3>
 </body>
 </html>

@@ -11,7 +11,24 @@ from sklearn.cluster import KMeans
 import time
 import joblib
 import pyttsx3
+from termcolor import colored
 
+def print_colored(text, color="white"):
+    print(colored(text, color))
+
+def display_intro():
+    print_colored("Welcome to the KooKooKaaKaa Vocab Game!", "cyan")
+    print_colored("Listen to the word and choose the correct option.", "cyan")
+    print()
+
+def display_result(is_correct, word=None):
+    if is_correct:
+        print_colored("Correct!!", "green")
+    else:
+        print_colored(f"Incorrect! The word was {word}", "red")
+
+def display_score(score):
+    print_colored(f"Score: {score}", "cyan")
 
 def play_audio(text):
     engine = pyttsx3.init()
@@ -28,18 +45,18 @@ with open('Group26_Final_Project\words.txt', 'r') as file:
 
 refined_words = [word for word in words if word.isalpha() and len(word) >= 3]
 
-with open('application_words.txt', 'w') as file:
+with open('Group26_Final_Project\application_words.txt', 'w') as file:
     file.write('\n'.join(refined_words))
 
 random_sample = random.sample(refined_words, 1000)
-with open('training_words.txt', 'w') as file:
+with open('Group26_Final_Project\training_words.txt', 'w') as file:
     file.write('\n'.join(random_sample))
 
-file_path = 'training_words.txt'
+file_path = 'Group26_Final_Project\training_words.txt'
 training_df = pd.read_csv(file_path, sep= " ", names=['word'])
 training_df = training_df.dropna()
 
-file_path = 'application_words.txt'
+file_path = 'Group26_Final_Project\application_words.txt'
 application_df = pd.read_csv(file_path, sep= " ", names=['word'])
 application_df = application_df.dropna()
 
@@ -83,6 +100,9 @@ def predict_cluster(word):
 
 stored_clusters = []
 score = 0
+    
+display_intro()
+
 def play_round_one():
     global stored_clusters
     global score
@@ -91,23 +111,33 @@ def play_round_one():
     index = random.randint(0, 3)
     word_to_pronounce = random_words[index]
 
-    print(f"\nListen to the word carefully: {word_to_pronounce}")
+    print_colored(f"\nListen to the word very carefully:", "green")
     play_audio(word_to_pronounce)
-    time.sleep(0.5)
+    time.sleep(0.1)
 
-    print("\nSelect the correct option by index:")
+    print_colored("\nSelect the correct option by index:", "cyan")
     for i, word in enumerate(random_words):
-        print(f"{i + 1}. {word}")
+        print_colored(f"{i + 1}. {word}", "yellow")
+
+    start_time = time.time()
 
     user_input = int(input("Enter the index of the correct option: "))
-    if user_input == index + 1:
-        print("Correct!!")
-    elif user_input == index + 1:
-        cluster_of_incorrect_word = predict_cluster(word_to_pronounce)
-        stored_clusters.append(cluster_of_incorrect_word)
 
-    score = 100 - (len(stored_clusters) * 20)
-    print(f"Score: {score}")
+    response_time = time.time() - start_time
+    time_bonus = max(0, 10 - response_time) * 5  
+
+    if user_input == random_words.index(word_to_pronounce) + 1:
+        display_result(True)
+        stored_clusters = []
+        combo_bonus = len(stored_clusters) * 10
+        score += 10 + time_bonus + combo_bonus
+    else:
+        cluster_of_incorrect_word = predict_cluster(word_to_pronounce)
+        display_result(False, word_to_pronounce)
+        stored_clusters.append(cluster_of_incorrect_word)
+        score = score + max(0, time_bonus)
+
+    display_score(score)
 
 def play_round():
     global stored_clusters
@@ -122,7 +152,7 @@ def play_round():
 
     print(f"\nListen to the word: {word_to_pronounce}")
     play_audio(word_to_pronounce)
-    time.sleep(0.5)
+    time.sleep(0.1)
 
     print("\nSelect the correct option by index:")
     for i, word in enumerate(random_words):
@@ -140,11 +170,13 @@ def play_round():
         print(f"Incorrect! The word was {word_to_pronounce}")
         stored_clusters.append(cluster_of_incorrect_word)
     score = score + (100 - (len(stored_clusters) * 20))
+    print(f"Score: {score}")
 
 for _ in range(5):
     play_round_one()
-for _ in range(5):
-    play_round()
-
-print("\nStored clusters:", stored_clusters)
-print("Use these clusters to regulate the randomization in future iterations.")
+while True:
+    for i in range(5):
+        play_round()
+    state = input("Do you want to continue? (y/n): ")
+    if state == 'n':
+        break
