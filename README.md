@@ -21,9 +21,12 @@ Implement an error analysis mechanism to customise content and adapt to individu
 - A trained model that can be used to predict the cluster of a word.
 
 ## Required Libraries
-
+- Located in the requirements.txt file
 
 ## Installation Instructions
+- Clone the repository
+- Install the required libraries using the command `pip install -r requirements.txt`
+- Run the program using the command `python main.py`
 
 ## Limitations
 - The accent of the voice may not be so clear.
